@@ -2,189 +2,161 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return """
+def page(title, content):
+    return f"""
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Analysis Studio</title>
+<title>{title}</title>
 
 <style>
+body {{
+    margin:0;
+    font-family:Arial;
+    background:#1e1e1e;
+    color:white;
+}}
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+header {{
+    background:#252526;
+    padding:20px;
+    text-align:center;
+    font-size:35px;
+    color:#00bfff;
+}}
+
+nav {{
+    text-align:center;
+    padding:20px;
+}}
+
+nav a {{
+    text-decoration:none;
+    color:white;
+    background:#0078d7;
+    padding:15px 25px;
+    border-radius:10px;
+    margin:10px;
+    display:inline-block;
 }
 
-body{
-background:#1e1e1e;
-color:white;
-min-height:100vh;
-}
+nav a:hover {{
+    background:#00bfff;
+}}
 
-.header{
-width:100%;
-padding:25px;
-background:#252526;
-text-align:center;
-font-size:40px;
-font-weight:bold;
-color:#00bfff;
-box-shadow:0 2px 15px rgba(0,0,0,.4);
-}
+.content {{
+    padding:40px;
+    text-align:center;
+}}
 
-.subtitle{
-text-align:center;
-padding:15px;
-color:#bbb;
-font-size:18px;
-}
-
-.container{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:25px;
-padding:30px;
-}
-
-.card{
-background:#2d2d30;
-border-radius:20px;
-padding:30px;
-box-shadow:0 0 20px rgba(0,191,255,.15);
-transition:.4s;
-}
-
-.card:hover{
-transform:translateY(-10px);
-box-shadow:0 0 25px rgba(0,191,255,.4);
-}
-
-.card h2{
-color:#00bfff;
-margin-bottom:15px;
-font-size:28px;
-}
-
-.card p{
-color:#d0d0d0;
-line-height:1.8;
-font-size:17px;
-}
-
-button{
-margin-top:20px;
-padding:14px 25px;
-background:#0078d7;
-color:white;
-border:none;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-transition:.3s;
-}
-
-button:hover{
-background:#00bfff;
-}
-
-.footer{
-margin-top:50px;
-background:#252526;
-padding:30px;
-text-align:center;
-color:#aaa;
-font-size:16px;
-}
-
-.footer h3{
-color:white;
-margin-bottom:10px;
-}
-
-@media(max-width:768px){
-
-.header{
-font-size:30px;
-}
-
-.card h2{
-font-size:24px;
-}
-
-.card{
-padding:25px;
-}
-
-}
-
+footer {{
+    background:#252526;
+    text-align:center;
+    padding:20px;
+    margin-top:50px;
+}}
 </style>
 </head>
 <body>
 
-<div class="header">
+<header>
 🐍 Data Analysis Studio
+</header>
+
+<nav>
+<a href="/">Dashboard</a>
+<a href="/editor">Python Editor</a>
+<a href="/excel">Excel Analysis</a>
+<a href="/sql">SQL Console</a>
+<a href="/charts">Visualization</a>
+<a href="/about">About</a>
+</nav>
+
+<div class="content">
+{content}
 </div>
 
-<div class="subtitle">
-Professional Python • SQL • Excel • Visualization Workspace
-</div>
-
-<div class="container">
-
-<div class="card">
-<h2>🏠 Dashboard</h2>
-<p>Central workspace for managing projects, datasets and analytics tasks.</p>
-<button>Open Dashboard</button>
-</div>
-
-<div class="card">
-<h2>🐍 Python Editor</h2>
-<p>Write and execute Python programs in a VS Code style environment.</p>
-<button>Open Editor</button>
-</div>
-
-<div class="card">
-<h2>📊 Excel / CSV Analysis</h2>
-<p>Import Excel and CSV datasets and perform powerful analysis.</p>
-<button>Analyze Data</button>
-</div>
-
-<div class="card">
-<h2>🗄 SQL Console</h2>
-<p>Execute SQL queries and manage databases efficiently.</p>
-<button>Open SQL Console</button>
-</div>
-
-<div class="card">
-<h2>📈 Visualization</h2>
-<p>Create interactive charts and graphical insights from data.</p>
-<button>Create Charts</button>
-</div>
-
-<div class="card">
-<h2>🌙 Dark Workspace</h2>
-<p>Professional VS Code inspired dark interface for developers and analysts.</p>
-<button>Explore</button>
-</div>
-
-</div>
-
-<div class="footer">
-<h3>Designed & Developed by ANKIT SAINI</h3>
-<p>B.Tech IT Student | Python | SQL | Data Analytics | Cybersecurity</p>
-<p>Email: as3126061@gmail.com</p>
-<p>© 2026 Data Analysis Studio. All Rights Reserved.</p>
-</div>
+<footer>
+Designed & Developed by <b>ANKIT SAINI</b><br>
+Email: as3126061@gmail.com
+</footer>
 
 </body>
 </html>
 """
+
+@app.route("/")
+def home():
+    return page(
+        "Dashboard",
+        """
+        <h1>🏠 Dashboard</h1>
+        <p>Welcome to Data Analysis Studio.</p>
+        """
+    )
+
+@app.route("/editor")
+def editor():
+    return page(
+        "Python Editor",
+        """
+        <h1>🐍 Python Editor</h1>
+        <textarea rows="20" cols="80"
+        style="background:black;color:#00ff00;padding:10px;">
+print("Hello World")
+        </textarea>
+        """
+    )
+
+@app.route("/excel")
+def excel():
+    return page(
+        "Excel Analysis",
+        """
+        <h1>📊 Excel / CSV Analysis</h1>
+        <p>Upload and analyze datasets.</p>
+        """
+    )
+
+@app.route("/sql")
+def sql():
+    return page(
+        "SQL Console",
+        """
+        <h1>🗄 SQL Console</h1>
+        <textarea rows="10" cols="80"
+        style="background:black;color:white;padding:10px;">
+SELECT * FROM table_name;
+        </textarea>
+        """
+    )
+
+@app.route("/charts")
+def charts():
+    return page(
+        "Visualization",
+        """
+        <h1>📈 Visualization</h1>
+        <p>Charts and graphs section.</p>
+        """
+    )
+
+@app.route("/about")
+def about():
+    return page(
+        "About",
+        """
+        <h1>ℹ About Data Analysis Studio</h1>
+        <p>Professional platform for Python, SQL and Data Analysis.</p>
+
+        <h3>Developer</h3>
+        <p><b>ANKIT SAINI</b></p>
+        <p>B.Tech IT Student</p>
+        <p>Email: as3126061@gmail.com</p>
+        """
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
